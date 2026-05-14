@@ -6,9 +6,15 @@ A real-time multiplayer card game for 2-6 players. Collect 3 Trios to win!
 
 ## Screenshots
 
-<!-- Add screenshots here -->
-<!-- Example: ![Home Screen](screenshots/home.png) -->
-<!-- Example: ![Game Screen](screenshots/game.png) -->
+<img width="500"  alt="image" src="https://github.com/user-attachments/assets/3ce3de20-1a35-491e-a492-fa6c93e86084" />
+
+<img width="500" alt="image" src="https://github.com/user-attachments/assets/4e7e9e5b-0ff2-4299-984d-775568a91382" />
+
+<img width="500"  alt="image" src="https://github.com/user-attachments/assets/62f379d5-902d-46a2-ac3d-7f9263a140e1" />
+
+<img width="500"  alt="image" src="https://github.com/user-attachments/assets/7d77b347-75a3-4b3d-9c39-0739b64e303b" />
+
+
 
 *Screenshots coming soon...*
 
@@ -38,62 +44,4 @@ A real-time multiplayer card game for 2-6 players. Collect 3 Trios to win!
 - **Mobile Wrapper:** Capacitor (Android & iOS)
 - **Hosting:** Netlify
 
-## Quick Start
 
-```bash
-# Clone the repo
-git clone https://github.com/aymksen/Triogame.git
-cd triogame
-
-# Run locally
-cd web
-python -m http.server 5173
-# Open http://localhost:5173
-```
-
-## Setup
-
-### 1. Firebase Configuration
-
-Copy `web/firebase-config.js.template` to `web/firebase-config.js` and add your Firebase project credentials:
-
-```javascript
-const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
-  projectId: "YOUR_PROJECT",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
-};
-```
-
-See [`FIREBASE_SETUP.md`](FIREBASE_SETUP.md) for detailed Firebase setup instructions.
-
-### 2. Deploy Web
-
-Deploy the `web/` folder to Netlify, Vercel, or any static host.
-
-### 3. Mobile Apps
-
-```bash
-cd mobile
-npm install
-npm run build
-npx cap run android   # or ios
-```
-
-## Repository Structure
-
-```
-triogame/
-├── web/              # Web app (HTML/CSS/JS)
-├── mobile/           # Capacitor wrapper for native apps
-├── FIREBASE_SETUP.md # Firebase configuration guide
-└── README.md         # This file
-```
-
-## License
-
-MIT © [aymksen](https://github.com/aymksen)
