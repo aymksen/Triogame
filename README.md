@@ -16,8 +16,6 @@ A real-time multiplayer card game for 2-6 players. Collect 3 Trios to win!
 
 
 
-*Screenshots coming soon...*
-
 ## About The Game
 
 **Trio** is a fast-paced multiplayer card game built with **Firebase Realtime Database** for instant synchronization across all players. Whether you're on a phone, tablet, or desktop, the game adapts beautifully to your screen.
