@@ -1,0 +1,19 @@
+# Node / build artifacts
+node_modules/
+package-lock.json
+.netlify/
+
+# Capacitor
+mobile/www/
+mobile/android/
+mobile/ios/
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.log
+.vscode/
+.idea/
+
+# Firebase config (contains secrets)
+web/firebase-config.js

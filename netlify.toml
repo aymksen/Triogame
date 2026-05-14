@@ -1,0 +1,38 @@
+# Netlify configuration for the Trio static site.
+# The project is plain HTML/CSS/JS so there is nothing to build.
+
+[build]
+  publish = "web"
+  command = ""
+
+# Cache-bust the entry point so users always get the latest app.
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "no-cache"
+
+# Static assets can be cached aggressively (file names rarely change).
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+
+# Sensible security defaults.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "no-referrer-when-downgrade"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+
+# Single-page fallback (harmless for this app, future-proof).
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

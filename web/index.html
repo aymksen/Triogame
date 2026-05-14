@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#0b0820" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <title>Trio — Multiplayer Card Game</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="bg-stars"></div>
+  <div id="app">
+    <!-- ========== HOME SCREEN ========== -->
+    <section id="screen-home" class="screen active">
+      <div class="card-panel">
+        <h1 class="logo">TRIO</h1>
+        <p class="tagline">★ Collect 3 Trios To Win The Game ★</p>
+
+        <label class="field">
+          <span>Your name</span>
+          <input id="input-name" type="text" maxlength="16" placeholder="e.g. Alex" autocomplete="off" />
+        </label>
+
+        <button id="btn-create" class="btn btn-primary">Create Lobby</button>
+
+        <div class="divider"><span>or</span></div>
+
+        <label class="field">
+          <span>Lobby code</span>
+          <input id="input-code" type="tel" inputmode="numeric" maxlength="4" placeholder="4-digit code" />
+        </label>
+        <button id="btn-join" class="btn btn-secondary">Join Lobby</button>
+
+        <p id="home-error" class="error"></p>
+
+        <details class="how-to-play">
+          <summary>How to play <span class="chev">▾</span></summary>
+          <div class="rules">
+            <p class="rules-lead">Be the first to collect <strong>3 Trios</strong> — or flip the <strong class="seven">7</strong> on your turn for an instant win.</p>
+
+            <h4><span class="rule-num">1</span> Setup</h4>
+            <ul>
+              <li>Cards numbered <strong>1–12</strong>, three of each (36 total).</li>
+              <li>Everyone gets a hidden hand. Leftover cards form the <em>center pile</em> face-down.</li>
+            </ul>
+
+            <h4><span class="rule-num">2</span> On your turn</h4>
+            <ul>
+              <li>Reveal a card from any of these sources:
+                <ul>
+                  <li>any <strong>center pile</strong> card,</li>
+                  <li>any opponent's <strong>lowest</strong> or <strong>highest</strong> card,</li>
+                  <li>your own <strong>lowest</strong> or <strong>highest</strong> card.</li>
+                </ul>
+              </li>
+              <li>Keep revealing more cards from the same sources — they all have to be the <strong>same number</strong> as your first reveal.</li>
+              <li>Three matching cards = you score a <strong>Trio</strong> and they leave the game.</li>
+              <li>Reveal a card that <strong>doesn't match</strong> and your turn ends — every revealed card returns face-down.</li>
+            </ul>
+
+            <h4><span class="rule-num">3</span> Winning</h4>
+            <ul>
+              <li>Collect <strong>3 Trios</strong> to win the game.</li>
+              <li>Or flip the <strong class="seven">7</strong> from the center on your turn — instant win!</li>
+            </ul>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- ========== LOBBY SCREEN ========== -->
+    <section id="screen-lobby" class="screen">
+      <div class="card-panel">
+        <h2>Lobby</h2>
+        <div id="code-box" class="code-box" role="button" tabindex="0" title="Tap to copy">
+          <div class="code-label">Share this code · tap to copy</div>
+          <div id="lobby-code" class="code-value">----</div>
+          <div id="code-copied" class="code-copied">Copied!</div>
+        </div>
+        <h3>Players</h3>
+        <ul id="player-list" class="player-list"></ul>
+        <p class="hint" id="lobby-hint">Waiting for players to join…</p>
+        <button id="btn-start" class="btn btn-primary" disabled>Start Game</button>
+        <button id="btn-leave" class="btn btn-ghost">Leave</button>
+      </div>
+    </section>
+
+    <!-- ========== GAME SCREEN ========== -->
+    <section id="screen-game" class="screen">
+      <div class="game-topbar">
+        <button id="btn-help" class="btn-icon" title="How to play" aria-label="How to play">?</button>
+        <header id="turn-banner" class="turn-banner">Waiting…</header>
+        <button id="game-code" class="game-code" title="Tap to copy lobby code" aria-label="Lobby code (tap to copy)">
+          <span class="game-code-hash">#</span><span id="game-code-num">----</span>
+        </button>
+        <button id="btn-leave-game" class="btn-leave-game" title="Leave game" aria-label="Leave game">✕</button>
+      </div>
+
+      <div id="opponents" class="opponents"></div>
+
+      <div class="center-area">
+        <div class="section-title">Center Pile <span id="center-count" class="badge">0</span></div>
+        <div id="center-pile" class="center-pile"></div>
+      </div>
+
+      <div class="staging-area" id="staging-area">
+        <span class="staging-label">Reveal</span>
+        <div id="revealed-cards" class="revealed-cards">
+          <div class="placeholder">tap a card to start your turn</div>
+        </div>
+        <div id="turn-status" class="turn-status"></div>
+      </div>
+
+      <div class="my-area">
+        <div class="section-title my-title">
+          <span class="my-stats">
+            <span class="cards-stat" title="cards in hand">
+              <span class="card-icon">🃏</span>
+              <span id="hand-count" class="stat-num">0</span>
+            </span>
+            <span id="my-trio-chips" class="trio-chips"></span>
+          </span>
+          <span id="my-name-tag" class="my-name-tag">
+            <span id="my-avatar" class="avatar">?</span>
+            <span id="my-name" class="my-name-label">You</span>
+          </span>
+        </div>
+        <div id="my-hand" class="my-hand"></div>
+        <div class="action-row">
+          <button id="btn-reveal-mine-low" class="btn btn-tiny">Reveal My Lowest</button>
+          <button id="btn-reveal-mine-high" class="btn btn-tiny">Reveal My Highest</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== RULES MODAL ========== -->
+    <div id="rules-overlay" class="overlay hidden">
+      <div class="overlay-card rules-card">
+        <button id="btn-rules-close" class="btn-icon overlay-close" aria-label="Close">✕</button>
+        <h2 class="rules-title">How to play</h2>
+        <div id="rules-modal-body" class="rules"></div>
+      </div>
+    </div>
+
+    <!-- ========== WIN OVERLAY ========== -->
+    <div id="win-overlay" class="overlay hidden">
+      <div class="overlay-card">
+        <div class="trophy">🏆</div>
+        <h2 id="win-title">Winner!</h2>
+        <p id="win-reason"></p>
+        <button id="btn-play-again" class="btn btn-primary">Back to Home</button>
+      </div>
+    </div>
+
+    <!-- ========== CONFIRM MODAL ========== -->
+    <div id="confirm-overlay" class="overlay hidden">
+      <div class="overlay-card small">
+        <h2 id="confirm-title">Are you sure?</h2>
+        <p id="confirm-message"></p>
+        <div class="btn-row">
+          <button id="confirm-no" class="btn btn-secondary">Cancel</button>
+          <button id="confirm-yes" class="btn btn-danger">Yes</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== TOAST ========== -->
+    <div id="toast" class="toast hidden"></div>
+  </div>
+
+  <!-- Firebase compat SDKs (work great with Capacitor) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+
+  <script src="firebase-config.js"></script>
+  <script src="firebase.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
